@@ -103,3 +103,22 @@
     (define (identity x) x)
     (sum identity a inc b))
 ;(sum-integers 1 100)
+
+(define (sum-cubes a b )
+  (define (increment arguments)
+    (+ arguments 1))
+    (sum cube a increment b))
+
+(define (inc n)
+    (+ n 1))
+
+(define (simpson f a b n)
+    (define h (/ (- b a) n))
+    (define (add-h x)
+        (+ x h))
+    (define (add-2h x)
+        (+ x (* 2 h)))
+    (* (/ h 3)
+        (+ (f a) (f b)
+        (* 2 (sum f a add-h b))
+        (* 2 (sum f (+ a h) add-2h (+ a (* (- n 1) h)))))))
