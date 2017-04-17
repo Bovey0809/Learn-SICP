@@ -88,3 +88,18 @@
     (if (> a b)
         0
         (+ (cube a) (sum-cubes (+ a 1) b))))
+
+; Procedure as arguments
+(define (sum term a next b)
+    (if (> a b)
+        0
+        (+ (term a)
+            (sum term (next a) next b))))
+
+;if we want to sum integers from a to b
+(define (sum-integers a b )
+    (define (inc n)
+        (+ n 1))
+    (define (identity x) x)
+    (sum identity a inc b))
+;(sum-integers 1 100)
