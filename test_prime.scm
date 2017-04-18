@@ -191,3 +191,34 @@
         (+ x 1))
     (define (func x) x)
     (accumulate-r add 0 func a increment b))
+
+;this is the recursive version of 1.33
+(define (filtered-accumulate filter combine null-value term a next b)
+    (if (> a b)
+        null-value
+        (if (filter a)
+            (combine (term a)
+                (filtered-accumulate filter combine null-value term (next a) next b))
+            (filtered-accumulate filter combine null-value term (next a) next b))))
+;this is the iteration version of 1.33
+(define (filtered-accumulate-i filter combine null-value term a next b)
+    (if (> a b)
+        null-value
+        (if (filter a)
+            (filtered-accumulate-i filter combine (combine (term a) null-value) term (next a) next b)
+            (filtered-accumulate-i filter combine null-value term (next a) next b))))
+;use different versions to verify 1.33 a
+(define (sum-prime-squares a b)
+    (define (add x y) (+ x y))
+    (define (increment x) (+ x 1))
+    (filtered-accumulate-i prime? add 0 square a increment b))
+
+(define (sum-prime-squares-r a b)
+    (define (add x y) (+ x y))
+    (define (increment x) (+ x 1))
+    (filtered-accumulate prime? add 0 square a increment b))
+
+(define (gcd a b )
+  (if (= b 0)
+    a
+    (gcd b (remainder a b))))
