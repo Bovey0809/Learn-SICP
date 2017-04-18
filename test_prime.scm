@@ -122,3 +122,72 @@
         (+ (f a) (f b)
         (* 2 (sum f a add-h b))
         (* 2 (sum f (+ a h) add-2h (+ a (* (- n 1) h)))))))
+
+;Exercise 1.30 write a procedure to use the iteration structure
+
+(define (sum-iter term a next b)
+    (define (iter a result)
+        (if (> a b)
+            result ;not 0
+            (iter (next a) (+ (term a) result))))
+    (iter a 0))
+
+;Exercise 1.31 Write the product procedure of different versions
+; a. recursive version
+(define (product-r term a next b)
+    (if (> a b)
+        1 ;Here should be 1 instead of a
+        (* (term a)
+            (product-r term (next a) next b))))
+
+(define (factorial n)
+    (define (multiply x)
+        x)
+    (define (inc x)
+        (+ x 1))
+    (product-r multiply 1 inc n))
+
+(define (product-i term a next b)
+    (define (iter a result)
+        (if (> a b)
+            result
+            (iter (next a) (* result (term a)))))
+    (iter a 1))
+
+(define (factorial-i n)
+    (define (multiply x)
+        x)
+    (define (inc x)
+        (+ 1 x))
+    (product-i multiply 1 inc n))
+
+; exercise 1.32
+(define (accumulate-i combine null-value term a next b)
+    (if (> a b)
+        null-value
+        (accumulate-i combine (combine (term a) null-value) term (next a) next b)))
+
+;use the accumulate-i to define sum-integers
+(define (sum-acc a b)
+    (define (add x y)
+        (+ x y))
+    (define (increment x)
+        (+ x 1))
+    (define (func x)
+        x)
+    (accumulate-i add 0 func a increment b))
+
+;ues the recusive process to formulate accumulation
+(define (accumulate-r combine null-value term a next b)
+    (if (> a b)
+        null-value
+        (combine (term a)
+                (accumulate-r combine null-value term (next a) next b))))
+
+(define (sum-acc-r a b)
+    (define (add x y)
+            (+ x y))
+    (define (increment x)
+        (+ x 1))
+    (define (func x) x)
+    (accumulate-r add 0 func a increment b))
