@@ -89,7 +89,7 @@
   (average guess (/ x guess)))
 
 (define (iterative-improve p1 p2)
-  (define (iter guess)
+  (define (iter guess
     (if (p1 guess)
         guess
         (iter (p2 guess))))
